@@ -62,7 +62,6 @@ public class BookController {
         }
     }
 
-    //todo zmienic na dto
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         try {
@@ -73,44 +72,41 @@ public class BookController {
         }
     }
 
-    //todo zmienic na dto
     @GetMapping("/before/{year}")
-    public ResponseEntity<List<BookModel>> findBooksBeforeYear(@PathVariable Integer year) {
+    public ResponseEntity<List<BookDto>> findBooksBeforeYear(@PathVariable Integer year) {
         try {
-            List<BookModel> booksBeforeYear = bookService.findBooksBeforeYear(year);
+            List<BookDto> booksBeforeYear = bookService.findBooksBeforeYear(year);
             return ResponseEntity.ok(booksBeforeYear);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    //todo zmienic na dto
     @GetMapping("/author/{letter}")
-    public ResponseEntity<List<BookModel>> findBooksByAuthorStartsWith(@PathVariable String letter) {
+    public ResponseEntity<List<BookDto>> findBooksByAuthorStartsWith(@PathVariable String letter) {
         try {
-            List<BookModel> byAuthorStartsWith = bookService.findByAuthorStartsWith(letter);
+            List<BookDto> byAuthorStartsWith = bookService.findByAuthorStartsWith(letter);
             return ResponseEntity.ok(byAuthorStartsWith);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    //todo zmienic na dto
+
     @GetMapping("/author")
-    public ResponseEntity<List<BookModel>> findBooksByAuthor(@Param("author") String author) {
+    public ResponseEntity<List<BookDto>> findBooksByAuthor(@Param("author") String author) {
         try {
-            List<BookModel> booksByAuthor = bookService.findByAuthor(author);
+            List<BookDto> booksByAuthor = bookService.findByAuthor(author);
             return ResponseEntity.ok(booksByAuthor);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    //todo zmienic na dto
     @GetMapping("/title")
-    public ResponseEntity<List<BookModel>> findBooksByTitle(@Param("title") String title) {
+    public ResponseEntity<List<BookDto>> findBooksByTitle(@Param("title") String title) {
         try {
-            List<BookModel> booksByTitle = bookService.findByTitle(title);
+            List<BookDto> booksByTitle = bookService.findByTitle(title);
             return ResponseEntity.ok(booksByTitle);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();

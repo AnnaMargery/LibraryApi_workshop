@@ -10,10 +10,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+
 public class BookService {
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
 
     private final BookRepository bookRepository;
 
@@ -51,20 +55,35 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    //todo zmienic na dto
-    public List<BookModel> findBooksBeforeYear(Integer year) {
-        return bookRepository.groupBooksBeforeYear(year);
+    public List<BookDto> findBooksBeforeYear(Integer year) {
+        List<BookModel> bookModels = bookRepository.groupBooksBeforeYear(year);
+        List<BookDto> bookDtos = new ArrayList<>();
+        for (BookModel bookModel : bookModels) {
+            bookDtos.add(BookMapper.toBookDto(bookModel));
+        }
+        return bookDtos;
     }
-    //todo zmienic na dto
-    public List<BookModel> findByAuthorStartsWith(String letter) {
-        return bookRepository.findByAuthorStartsWith(letter);
+
+    public List<BookDto> findByAuthorStartsWith(String letter) {
+        List<BookModel> byAuthorStartsWith = bookRepository.findByAuthorStartsWith(letter);
+        List<BookDto> byAuthorStartsWithDto = new ArrayList<>();
+        for (BookModel bookModel : byAuthorStartsWith) {
+            byAuthorStartsWithDto.add(BookMapper.toBookDto(bookModel));
+        }
+        return byAuthorStartsWithDto;
     }
-    //todo zmienic na dto
-    public List<BookModel> findByAuthor(String author) {
-        return bookRepository.groupBooksByAuthor(author);
+
+    public List<BookDto> findByAuthor(String author) {
+        List<BookModel> bookModels = bookRepository.groupBooksByAuthor(author);
+        return bookModels.stream()
+                .map(bookModel -> BookMapper.toBookDto(bookModel))
+                .collect(Collectors.toList());
     }
-    //todo zmienic na dto
-    public List<BookModel> findByTitle(String title) {
-        return bookRepository.groupBooksByTitle(title);
+
+    public List<BookDto> findByTitle(String title) {
+        List<BookModel> bookModels = bookRepository.groupBooksByTitle(title);
+        return bookModels.stream()
+                .map(bookModel -> BookMapper.toBookDto(bookModel))
+                .collect(Collectors.toList());
     }
 }
